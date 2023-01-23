@@ -151,7 +151,7 @@ def composition(nb_bandes,num_derniere_photo,num_premiere_photo,itere=0,mode=0,p
     outputImg = outputImgAddr+"/"+str(nb_bandes)+"_bandes.png"
     
     print("Enregistrement...")
-    metadata=pngInfoWriter()
+    metadata=pngInfoWriter()#type: ignore
     fond.save(outputImg, pnginfo=metadata)   #sauvegarde de la composition
     print("Enregistrement fini !")
     if affichage_final and not affichage_progressif:
