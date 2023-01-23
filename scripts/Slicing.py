@@ -1,7 +1,7 @@
 from PIL import Image
 import os
-from Pre_process import Pre_process
-from Data_process import Data_process
+from scripts.Pre_process import Pre_process
+from scripts.Data_process import Data_process
 from matplotlib import pyplot as plt
 from matplotlib import image as mpimg
 
@@ -34,7 +34,7 @@ class Slicing:
 
 
 
-    def composition(self, nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, itere=False ,mode=0,premiere_iteration=0,rognage=0, disp = True, affichage_progressif=False):
+    def slice(self, nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, itere=False ,mode=0,premiere_iteration=0,rognage=0, disp = True, affichage_progressif=False):
         p=Pre_process(inputStr)
         d=Data_process()
         if nb_bandes==1:            #on se passe des différentes opérations s'il n'y a qu'une bande (évite des divisions par 0)

@@ -1,4 +1,4 @@
-from Slicing import Slicing
+from scripts.Slicing import Slicing
 
 if __name__=='__main__':
 
@@ -11,4 +11,4 @@ if __name__=='__main__':
     nb_bandes = (num_derniere_photo-num_premiere_photo)+1
     m=3
 
-    s.composition(nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, mode=m)
+    s.slice(nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, mode=m)
