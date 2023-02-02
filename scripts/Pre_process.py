@@ -25,8 +25,10 @@ class Pre_process:
         else:
             num_fond=num_premiere_photo
         fond = Image.open(self.inputStr+"/"+os.listdir(self.inputStr)[num_fond])
+        print("fond : "+self.inputStr+"/"+os.listdir(self.inputStr)[num_fond])
         largeur, hauteur = fond.size
         
+        """
         if mode ==2: # gd
             overlay = Image.open(self.inputStr+"/"+os.listdir(self.inputStr)[num_derniere_photo_opti])  
             overlaycrop = overlay.crop((largeur//2,0,largeur,hauteur))
@@ -37,7 +39,7 @@ class Pre_process:
             overlaycrop = overlay.crop((0,0,largeur//2,hauteur))
             corner=(0,0)
             fond.paste(overlaycrop,corner)
-        
+        """
         return fond, largeur, hauteur
 
     def preparation_decoupage(self,largeur, nb_bandes, num_derniere_photo_opti,nb_photos,num_premiere_photo):
