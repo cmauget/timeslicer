@@ -1,5 +1,6 @@
 import os
 from PIL.PngImagePlugin import PngInfo
+import ffmpeg
 
 class Data_process:
 
@@ -42,3 +43,37 @@ class Data_process:
         metadata = PngInfo()
         metadata.add_text("Propriétés",texte)
         return metadata
+
+    def save_to_vid(self, inputStr, outputStr, fps=25):
+        '''
+        for i in range(10):
+            im = Image.open(inputStr+f'image{i}.png')
+            w, h = im.size
+            h = h - h % 2
+            im = im.resize((w, h))
+            im.save(inputStr+f'image{i}.png')
+        
+
+        TARGET_WIDTH = 4092
+        TARGET_HEIGHT = 2160
+
+        for i in range(70):
+            if i<10:
+                v=f'0{i}'
+            else:
+                v=i
+            im = Image.open(inputStr+f'image{v}.png')
+            w, h = im.size
+            if w != TARGET_WIDTH or h != TARGET_HEIGHT:
+                #TODO get ratio
+                im = im.resize((TARGET_WIDTH, TARGET_HEIGHT))
+            im.save(inputStr+f'image{v}.png')
+        '''
+
+        (
+            ffmpeg
+            .input(inputStr+'image%02d.png', framerate=24)
+            .output('video.mp4', pix_fmt='yuv420p', vcodec='libx264')
+            .run()
+        )
+  
