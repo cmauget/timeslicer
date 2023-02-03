@@ -5,13 +5,14 @@ from scripts.Data_process import Data_process
 from scripts.Align_cv import Align_cv
 from matplotlib import pyplot as plt
 from matplotlib import image as mpimg
+import ffmpeg #type: ignore
+import subprocess as sp
 
 class Slicing:
 
     def __init__(self):
         pass
-
-            
+      
     def overlay_cropNpaste(self,fond,overlay,mode,espace_residuel,largeur,largeur_bande,n_iteration,hauteur, decalage=0):
 
         if mode<=1:
@@ -69,9 +70,41 @@ class Slicing:
         image=image.crop((residu//2,0,largeur-residu//2,hauteur))
         return image
 
+    def save_to_vid(self, inputStr, outputStr, fps=25):
+        '''
+        for i in range(10):
+            im = Image.open(inputStr+f'image{i}.png')
+            w, h = im.size
+            h = h - h % 2
+            im = im.resize((w, h))
+            im.save(inputStr+f'image{i}.png')
+        
+
+        TARGET_WIDTH = 4092
+        TARGET_HEIGHT = 2160
+
+        for i in range(70):
+            if i<10:
+                v=f'0{i}'
+            else:
+                v=i
+            im = Image.open(inputStr+f'image{v}.png')
+            w, h = im.size
+            if w != TARGET_WIDTH or h != TARGET_HEIGHT:
+                #TODO get ratio
+                im = im.resize((TARGET_WIDTH, TARGET_HEIGHT))
+            im.save(inputStr+f'image{v}.png')
+        '''
+
+        (
+            ffmpeg
+            .input(inputStr+'image%02d.png', framerate=24)
+            .output('video.mp4', pix_fmt='yuv420p', vcodec='libx264')
+            .run()
+        )
 
 
-    def slice(self, nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, decalage = 0, align=False, itere=False ,mode=0,premiere_iteration=0,rognage=True, disp = False, affichage_progressif=False):
+    def slice(self, nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, iter = 0, align=False, itere=False , mode=0, premiere_iteration=0, rognage=True, disp = False, affichage_progressif=False, vid=False):
         p=Pre_process(inputStr)
         d=Data_process()
         
@@ -115,6 +148,7 @@ class Slicing:
                 print("photo utilisée : ",photo_utilisee)
                 overlay = Image.open(inputStr+"/"+os.listdir(inputStr)[photo_utilisee])
                 print(inputStr+"/"+os.listdir(inputStr)[photo_utilisee])
+                decalage = iter*10
                 fond=self.overlay_cropNpaste(fond,overlay,mode,espace_residuel,largeur,largeur_bande,i,hauteur, decalage=decalage)
                 if affichage_progressif:
                     fond.show()
@@ -130,8 +164,17 @@ class Slicing:
         else:
             print("Slicing terminé !")
             outputImgAddr = outputStr+"/"+noms_modes[mode]
+        if vid:
+            if iter<10:
+                v=f'0{iter}'
+            else:
+                v=iter
+            outputImgAddr=outputImgAddr+"/vid/"
             d.folder(outputImgAddr,rm=0)
-        outputImg = outputImgAddr+"/"+str(nb_bandes)+"_"+str(decalage)+"_bandes.png"
+            outputImg = outputImgAddr+"image"+str(v)+".png" 
+        else : 
+            d.folder(outputImgAddr,rm=0)
+            outputImg = outputImgAddr+str(nb_bandes)+"_bandes.png"
         
         print("Enregistrement...")
         print(outputImg)
@@ -142,3 +185,9 @@ class Slicing:
             image = mpimg.imread(outputImg)
             plt.imshow(image)
             plt.show()
+
+    def silce_vid(self, nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, decalage = 0, align=False, itere=False , premiere_iteration=0,rognage=True, disp = False, affichage_progressif=False):
+
+        for i in range (100):
+            self.slice(nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, iter = i, align=False, itere=False ,mode=2, vid = True)
+  
