@@ -6,3 +6,4 @@ scripts/*.jpg
 slicer/*.jpg
 output/de_gauche_à_droite/
 *.mp4
+slicer/output/.vid/
