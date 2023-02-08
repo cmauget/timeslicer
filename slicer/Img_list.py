@@ -1,4 +1,4 @@
-from scripts.Img_process import Img_process
+from slicer.Img_process import Img_process
 import os
 
 class Img_list:

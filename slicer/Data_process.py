@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
-from scripts.Img_process import Img_process
+from slicer.Img_process import Img_process
 import ffmpeg #type: ignore
 
 class Data_process:

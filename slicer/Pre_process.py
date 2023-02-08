@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw
-from scripts.Img_list import Img_list
+from slicer.Img_list import Img_list
 import os
 
 class Pre_process:

@@ -1,20 +1,29 @@
 from PIL import Image
 import os
 
-from scripts.Pre_process import Pre_process
-from scripts.Data_process import Data_process
-from scripts.Align_cv import Align_cv
-from scripts.Img_list import Img_list
+import slicer
+
+from slicer.Data_process import Data_process
+from slicer.Align_cv import Align_cv
+from slicer.Img_list import Img_list
 
 import ffmpeg #type: ignore
 
 
 class Slicing:
 
+    '''
     def __init__(self, nbBandes1, imgList1: Img_list):
 
         self.nbBandes = nbBandes1
         self.imgList = imgList1
+        self.background = None
+    '''
+
+    def __init__(self, nbBandes1):
+
+        self.nbBandes = nbBandes1
+        self.imgList = Img_list()
         self.background = None
 
 
@@ -192,6 +201,7 @@ class Slicing:
             outputImg = outputImgAddr+str(nb_bandes)+"_bandes.png"
         
         d.save_pic(outputImg, fond)
+        return fond
 
 
     def silce_vid(self, nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, decalage = 0, align=False, itere=False , premiere_iteration=0,rognage=True, disp = False, affichage_progressif=False):
