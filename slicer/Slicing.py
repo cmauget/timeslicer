@@ -1,7 +1,7 @@
 from PIL import Image
 import os
 
-import slicer
+import streamlit as st#type: ignore
 
 from slicer.Data_process import Data_process
 from slicer.Align_cv import Align_cv
@@ -11,14 +11,6 @@ import ffmpeg #type: ignore
 
 
 class Slicing:
-
-    '''
-    def __init__(self, nbBandes1, imgList1: Img_list):
-
-        self.nbBandes = nbBandes1
-        self.imgList = imgList1
-        self.background = None
-    '''
 
     def __init__(self, nbBandes1):
 
@@ -117,44 +109,24 @@ class Slicing:
         image=image.crop((residu//2,0,largeur-residu//2,hauteur))
         return image
 
+    def decal_Img(self, iter, frames: int, cycle: int, mode = 1):
 
-    def save_to_vid(self, inputStr, outputStr, fps=25):
-        '''
-        for i in range(10):
-            im = Image.open(inputStr+f'image{i}.png')
-            w, h = im.size
-            h = h - h % 2
-            im = im.resize((w, h))
-            im.save(inputStr+f'image{i}.png')
+        largeur, _ = self.imgList.get_Max_Size()
+        decalage = int(iter * cycle * largeur/frames)
+        return decalage
+
+    def decal_Frames(self, duration, fps):
+
+        frames = int(duration*fps)
+        return frames
+
+
+
+    def slice(self, nb_bandes,  inputStr, outputStr, iter = 0, duration=0, cycle=0, frames=0, align=False,  rognage=True, vid=False, debug = False):
         
+        if not vid:
+            self.imgList.load_Img(inputStr)
 
-        TARGET_WIDTH = 4092
-        TARGET_HEIGHT = 2160
-
-        for i in range(70):
-            if i<10:
-                v=f'0{i}'
-            else:
-                v=i
-            im = Image.open(inputStr+f'image{v}.png')
-            w, h = im.size
-            if w != TARGET_WIDTH or h != TARGET_HEIGHT:
-                #TODO get ratio
-                im = im.resize((TARGET_WIDTH, TARGET_HEIGHT))
-            im.save(inputStr+f'image{v}.png')
-        '''
-
-        (
-            ffmpeg
-            .input(inputStr+'image%02d.png', framerate=24)
-            .output('video.mp4', pix_fmt='yuv420p', vcodec='libx264')
-            .run()
-        )
-
-
-    def slice(self, nb_bandes,  inputStr, outputStr, iter = 0, align=False,  premiere_iteration=0, rognage=True, vid=False, debug = False):
-        
-        self.imgList.load_Img(inputStr)
         d=Data_process()
         
 
@@ -175,25 +147,27 @@ class Slicing:
 
         largeur_bande, espace_residuel = self.pre_slice(nb_bandes)
 
+        if vid:
+            decalage = self.decal_Img(iter, frames, cycle)
+        else:
+            decalage=0
+
         for i in range(self.imgList.get_Nb_Img()):  
             photo_utilisee=i
             print("photo utilisée : ",photo_utilisee)
-            #overlay = self.imgList.get_Img(i)
             print(inputStr+os.listdir(inputStr)[photo_utilisee])
-            decalage = iter*10
             self.overlay_cropNpaste(espace_residuel,largeur_bande,i, decalage=decalage)
             print(str(round(100*(i)/self.imgList.get_Nb_Img()))+" %")  #avancement du traitement de la photo
         print("100 %")
 
         if rognage:
             fond = self.rognage_residus(self.background,espace_residuel)
-
-        #noms_modes=["c_b","c_e","l_r","r_l"]
         
         print("Slicing terminé !")
         outputImgAddr = outputStr
 
         if vid:
+            outputImgAddr=outputImgAddr+".vid/"
             outputImg = d.folder_to_vid(iter, outputImgAddr)
 
         else : 
@@ -201,11 +175,25 @@ class Slicing:
             outputImg = outputImgAddr+str(nb_bandes)+"_bandes.png"
         
         d.save_pic(outputImg, fond)
-        return fond
+        return fond, outputImgAddr
 
 
-    def silce_vid(self, nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, decalage = 0, align=False, itere=False , premiere_iteration=0,rognage=True, disp = False, affichage_progressif=False):
+    def silce_vid(self, nb_bandes, fps, inputStr, outputStr, duration = 2, cycle= 1, align=False,  rognage=True, debug = False):
 
-        for i in range (100):
-            self.slice(nb_bandes, num_derniere_photo, num_premiere_photo, inputStr, outputStr, iter = i, align=False, itere=False, vid = True)
+        d = Data_process()
+
+        self.imgList.load_Img(inputStr)
+        self.imgList.resize_Img_list()
+
+        frames = self.decal_Frames(duration, fps)
+
+        
+        mybar = st.progress(0)
+        for i in range (frames):
+            p = ((i/frames)*100)+1
+            mybar.progress(int(p))
+            _ , inputStr_vid = self.slice(nb_bandes, inputStr, outputStr, iter = i, duration= duration, frames= frames, cycle=cycle, align=align, vid = True)
+
+        d.save_to_vid(inputStr_vid, outputStr, fps)
+        d.folder(inputStr_vid, rm=True)
   

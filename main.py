@@ -10,9 +10,10 @@ if __name__=='__main__':
 
     s = Slicing(nb_bandes)
     
-    image = s.slice(nb_bandes, inputStr, outputStr)
-    print(type(image))
+    image, _ = s.slice(nb_bandes, inputStr, outputStr)
     image.show()
+
+    s.silce_vid(nb_bandes, 25, inputStr, outputStr)
 
     '''
     dir_path = os.path.dirname(os.path.realpath(__file__))

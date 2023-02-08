@@ -24,9 +24,9 @@ class Data_process:
                     os.mkdir(addr)
 
 
-    def folder(self,addr,rm=1):
+    def folder(self,addr,rm=True):
         if os.path.exists(addr):
-            if rm==1:
+            if rm:
                 for img in os.listdir(addr):
                     os.remove(addr+"/"+img)
         else:
@@ -54,9 +54,8 @@ class Data_process:
         else:
             v=iter
 
-        outputImgAddr=outputImgAddr+"/vid/"
         self.folder(outputImgAddr,rm=0)
-        fileName = outputImgAddr+"image"+str(v)+".png" 
+        fileName = outputImgAddr+f"image{v}.png" 
 
         return fileName
 
@@ -70,27 +69,12 @@ class Data_process:
             im = im.resize((w, h))
             im.save(inputStr+f'image{i}.png')
         
-
-        TARGET_WIDTH = 4092
-        TARGET_HEIGHT = 2160
-
-        for i in range(70):
-            if i<10:
-                v=f'0{i}'
-            else:
-                v=i
-            im = Image.open(inputStr+f'image{v}.png')
-            w, h = im.size
-            if w != TARGET_WIDTH or h != TARGET_HEIGHT:
-                #TODO get ratio
-                im = im.resize((TARGET_WIDTH, TARGET_HEIGHT))
-            im.save(inputStr+f'image{v}.png')
         '''
 
         (
             ffmpeg
-            .input(inputStr+'image%02d.png', framerate=24)
-            .output('video.mp4', pix_fmt='yuv420p', vcodec='libx264')
-            .run()
+            .input(inputStr+'image%02d.png', framerate=fps)
+            .output(outputStr+'video.mp4', pix_fmt='yuv420p', vcodec='libx264')
+            .run(overwrite_output=True)
         )
   

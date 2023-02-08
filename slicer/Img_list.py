@@ -9,6 +9,7 @@ class Img_list:
 
     def load_Img(self, inputStr):
 
+        self.imgList = []
         cwd = os.getcwd()
         print(cwd)
         os.chdir(inputStr)
@@ -44,6 +45,13 @@ class Img_list:
     def get_I(self, i: int):
 
         return self.imgList[i]
+
+
+    def resize_Img_list(self, height=4092, width=2160 ):
+
+        for img in self.imgList:
+            img = img.resize_Img(width, height)
+        print("Resize complete")
 
 
     

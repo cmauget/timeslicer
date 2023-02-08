@@ -23,15 +23,18 @@ class Img_process:
 
     def get_Img_Size(self):
 
-        return self.width, self.height
+        w, h = self.img.size
+        return w, h
 
     def get_Img_width(self):
 
-        return self.width
+        w, _ = self.img.size
+        return w
 
     def get_Img_height(self):
 
-        return self.height
+        _, h = self.img.size
+        return h
         
     def crop_Img(self):
         img_crop = self.img.crop((self.lBorder, self.bBorder, self.rBorder, self.tBorder))
@@ -41,6 +44,13 @@ class Img_process:
     def disp_Img(self):
 
         self.img.show()
+
+    def resize_Img(self, height=4092, width=2160):
+
+        if self.height != height or self.width != width:
+            #TODO get ratio
+            self.img = self.img.resize((width, height))
+        
 
     
 
