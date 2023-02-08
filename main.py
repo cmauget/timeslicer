@@ -1,5 +1,5 @@
-from scripts.Slicing import Slicing
-from scripts.Img_list import Img_list
+from slicer.Slicing import Slicing
+from PIL import Image
 import os
 
 if __name__=='__main__':
@@ -8,11 +8,11 @@ if __name__=='__main__':
     outputStr = "output/"
     nb_bandes = 3
 
-    imgList = Img_list()
-
-    s = Slicing(nb_bandes, imgList)
+    s = Slicing(nb_bandes)
     
-    s.slice(nb_bandes, inputStr, outputStr)
+    image = s.slice(nb_bandes, inputStr, outputStr)
+    print(type(image))
+    image.show()
 
     '''
     dir_path = os.path.dirname(os.path.realpath(__file__))
