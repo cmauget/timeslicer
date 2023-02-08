@@ -3,5 +3,6 @@ scripts/__pycache__/
 aligned/*.jpg
 *.pyc
 scripts/*.jpg
+slicer/*.jpg
 output/de_gauche_à_droite/
 *.mp4
