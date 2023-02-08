@@ -1,29 +1,25 @@
 import os
+from PIL import Image
 from PIL.PngImagePlugin import PngInfo
-import ffmpeg
+from scripts.Img_process import Img_process
+import ffmpeg #type: ignore
 
 class Data_process:
 
-    def __init__(self) -> None:
+    def __init__(self) :
         pass
 
-    def compteur_de_photos(self,inputStr):
-        num_derniere_photo = 0
-        inputStr=inputStr.replace('\\', "/")
-        for file in os.listdir(inputStr):
-            num_derniere_photo += 1
-        return num_derniere_photo
 
-    def creerDossiers(self,addr):
+    def create_folder(self,addr):
         if not os.path.exists(addr):
             i=len(addr)
-            while addr[i-1]!="/" and i>0:  #conditons limites
+            while addr[i-1]!="/" and i>0:
                 i-=1
             if i==0:
-                print("la racine n'existe pas")
+                print("root doesn't exists")
             else:
-                parent = addr[:i-1]  #on teste le dossier parent dans l'adresse
-                self.creerDossiers(parent)
+                parent = addr[:i-1] 
+                self.create_folder(parent)
                 if os.path.exists(parent):
                     os.mkdir(addr)
 
@@ -31,18 +27,39 @@ class Data_process:
     def folder(self,addr,rm=1):
         if os.path.exists(addr):
             if rm==1:
-                for pic in os.listdir(addr):
-                    os.remove(addr+"/"+pic)
+                for img in os.listdir(addr):
+                    os.remove(addr+"/"+img)
         else:
-            self.creerDossiers(addr)
+            self.create_folder(addr)
 
-    def pngInfoWriter(self, num_premiere_photo, num_derniere_photo):
-        texte = "num_premiere_photo = "+str(num_premiere_photo)
-        texte+= ", num_derniere_photo = "+str(num_derniere_photo)
-        #texte+= ", bandes = "+str(bandes)
+
+    def pngInfoWriter(self):
         metadata = PngInfo()
-        metadata.add_text("Propriétés",texte)
+        metadata.add_text("Properties", "sliced w/ timelapse-slicer")
         return metadata
+
+
+    def save_pic(self, fileName, img):
+    
+        print("Saving...", fileName)
+        metadata=self.pngInfoWriter()
+        img.save(fileName, pnginfo=metadata)   
+        print("Saved !")
+
+    
+    def folder_to_vid(self, iter, outputImgAddr):
+
+        if iter<10:
+            v=f'0{iter}'
+        else:
+            v=iter
+
+        outputImgAddr=outputImgAddr+"/vid/"
+        self.folder(outputImgAddr,rm=0)
+        fileName = outputImgAddr+"image"+str(v)+".png" 
+
+        return fileName
+
 
     def save_to_vid(self, inputStr, outputStr, fps=25):
         '''
