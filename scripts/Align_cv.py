@@ -10,12 +10,24 @@ class Align_cv:
         self.GOOD_MATCH_PERCENT = 0.15 
 
 
+    def edge_detect(self, img):
+
+        edges = cv2.Canny(img,250,500)
+
+        return edges
+
+
+
     def alignImages(self,im1, im2):
 
         print("Alignement...")
         # Convert images to grayscale
         im1Gray = cv2.cvtColor(im1, cv2.COLOR_BGR2GRAY)
         im2Gray = cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)
+
+        #im1Edge = self.edge_detect(im1Gray)
+        #im2Edge = self.edge_detect(im2Gray)
+
         # Detect ORB features and compute descriptors.
         orb = cv2.ORB_create(self.MAX_FEATURES)
         #sift = cv2.SIFT_create(self.MAX_FEATURES)
@@ -81,7 +93,7 @@ if __name__ == '__main__':
 
     a = Align_cv()
     # Read reference image
-    refFilename = '../input/DSC_9387-Panorama.jpg'
+    refFilename = '../input/DSC_9424-Panorama.jpg'
     
     imReference = a.loadRef(refFilename)
 
