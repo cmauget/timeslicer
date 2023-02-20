@@ -30,8 +30,8 @@ outputStr = st.sidebar.text_input("Enter output folder", value="output/")
 vid = st.sidebar.checkbox("Video Output")
 
 if vid:
-    funcoption = ["easeInSine", "linear", "easeInOutCubic"]
-    funclist=[s.easeInSine, s.linear, s.easeInOutCubic]
+    funcoption = [ "linear", "easeInSine", "easeInOutCubic"]
+    funclist=[ s.linear, s.easeInSine, s.easeInOutCubic]
     frame_rate = st.sidebar.number_input("Enter wanted fps", min_value=0, max_value=60, value=25)
     duration = st.sidebar.slider("Choose wanted duration ", min_value=1, max_value=30, value=5, step=1)
     cycle = st.sidebar.number_input("Choose wanted number of cycle ", min_value=1, max_value=30, value=1)
