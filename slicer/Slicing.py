@@ -14,9 +14,8 @@ import ffmpeg #type: ignore
 
 class Slicing:
 
-    def __init__(self, nbBandes1):
+    def __init__(self):
 
-        self.nbBandes = nbBandes1
         self.imgList = Img_list()
         self.background = None
 
@@ -31,8 +30,8 @@ class Slicing:
         
         
 
-    def pre_slice(self, nb_bandes):
-
+    def pre_slice(self):
+        nb_bandes =self.get_Nb_Bandes()
         largeur, _ = self.imgList.get_Max_Size()
         largeur_bande = largeur//nb_bandes 
         nb_img = self.imgList.get_Nb_Img()    
@@ -46,6 +45,9 @@ class Slicing:
         img = self.imgList[n_iteration]
     
         return img  
+
+    def get_Nb_Bandes(self):
+        return self.imgList.get_Nb_Img()
 
       
     def overlay_cropNpaste(self, espace_residuel, largeur_bande, iter, debug=False, decalage=0):
@@ -140,7 +142,7 @@ class Slicing:
 
 
 
-    def slice(self, nb_bandes,  inputStr, outputStr, func= linear, iter = 0, duration=0, cycle=0, frames=0, align=False,  rognage=True, vid=False, debug = False):
+    def slice(self,  inputStr, outputStr, func= linear, iter = 0, duration=0, cycle=0, frames=0, align=False,  rognage=True, vid=False, debug = False):
         
         if not vid:
             self.imgList.load_Img(inputStr)
@@ -163,7 +165,7 @@ class Slicing:
         
         self.create_bg()  
 
-        largeur_bande, espace_residuel = self.pre_slice(nb_bandes)
+        largeur_bande, espace_residuel = self.pre_slice()
 
         if vid:
             decalage = self.decal_Img(iter, frames, cycle, func)
@@ -190,13 +192,13 @@ class Slicing:
 
         else : 
             d.folder(outputImgAddr,rm=0)
-            outputImg = outputImgAddr+str(nb_bandes)+"_bandes.png"
+            outputImg = outputImgAddr+str(self.get_Nb_Bandes())+"_bandes.png"
         
         d.save_pic(outputImg, fond)
         return fond, outputImgAddr
 
 
-    def silce_vid(self, nb_bandes, fps, inputStr, outputStr, func=linear, duration = 2, cycle= 1, align=False,  rognage=True, debug = False, height = 4092, width = 2160):
+    def silce_vid(self, fps, inputStr, outputStr, func=linear, duration = 2, cycle= 1, align=False,  rognage=True, debug = False, height = 4092, width = 2160):
 
         d = Data_process()
 
@@ -210,7 +212,7 @@ class Slicing:
         for i in range (frames):
             p = ((i/frames)*100)+1
             mybar.progress(int(p))
-            _ , inputStr_vid = self.slice(nb_bandes, inputStr, outputStr, func=func, iter = i, duration= duration, frames= frames, cycle=cycle, align=align, vid = True)
+            _ , inputStr_vid = self.slice( inputStr, outputStr, func=func, iter = i, duration= duration, frames= frames, cycle=cycle, align=align, vid = True)
 
         d.save_to_vid(inputStr_vid, outputStr, fps)
         d.folder(inputStr_vid, rm=True)

@@ -14,8 +14,8 @@ st.set_page_config(
     page_icon=":camera:",
 )
 
-nb_Slice=3
-s = Slicing(nb_Slice)
+
+s = Slicing()
 
 runed =False
 
@@ -64,7 +64,7 @@ if button:
         print(func)
         with st.spinner("Generating video, please wait..."):
             place_holder.empty()
-            s.silce_vid(nb_Slice, frame_rate, inputStr, outputStr, func=func, duration=duration, cycle=cycle, height=height, width=width)
+            s.silce_vid( frame_rate, inputStr, outputStr, func=func, duration=duration, cycle=cycle, height=height, width=width)
         video_file = open(f'{outputStr}/video.mp4', 'rb')
         video_bytes = video_file.read()
         st.video(video_bytes)
@@ -73,14 +73,14 @@ if button:
         with st.spinner("Please wait.."):
             place_holder.empty()
             runed = True
-            img, _ = s.slice(nb_Slice, inputStr, outputStr)
+            img, _ = s.slice( inputStr, outputStr)
         st.image(img, caption="Output image")
     st.balloons()
 
 st.markdown("---")
 
 st.write(
-    "Share on social media !"
+    "Feel free to share on social media !"
 )
 st.markdown(
     "More infos and :star: at [github.com/cmauget/timelapse-slicer](https://github.com/cmauget/timelapse-slicer)"
