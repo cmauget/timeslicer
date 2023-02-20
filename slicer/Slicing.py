@@ -1,5 +1,7 @@
 from PIL import Image
+
 import os
+import numpy as np
 
 import streamlit as st#type: ignore
 
@@ -34,7 +36,7 @@ class Slicing:
         largeur, _ = self.imgList.get_Max_Size()
         largeur_bande = largeur//nb_bandes 
         nb_img = self.imgList.get_Nb_Img()    
-        print("nb photo : ", nb_img)                                        
+        #print("nb photo : ", nb_img)                                        
         espace_residuel=int((largeur%(nb_bandes))/2)                                
         return largeur_bande, espace_residuel
 
@@ -109,11 +111,27 @@ class Slicing:
         image=image.crop((residu//2,0,largeur-residu//2,hauteur))
         return image
 
-    def decal_Img(self, iter, frames: int, cycle: int, mode = 1):
+    def easeInSine(self, x):
+        return (1 - np.cos((x*np.pi)/2))
+
+    def linear(self, x):
+        return x
+
+    def easeInOutCubic(self, x):
+        if x < 0.5:
+            x = 4 * x * x * x 
+        else :
+            x = 1 - pow(-2 * x + 2, 3) / 2
+        return x
+
+    def decal_Img(self, iter, frames: int, cycle: int,  func , mode = 1):
 
         largeur, _ = self.imgList.get_Max_Size()
-        decalage = int(iter * cycle * largeur/frames)
+        ratio =  cycle * largeur
+        x = iter/frames
+        decalage = int(func(x)*ratio)
         return decalage
+
 
     def decal_Frames(self, duration, fps):
 
@@ -122,7 +140,7 @@ class Slicing:
 
 
 
-    def slice(self, nb_bandes,  inputStr, outputStr, iter = 0, duration=0, cycle=0, frames=0, align=False,  rognage=True, vid=False, debug = False):
+    def slice(self, nb_bandes,  inputStr, outputStr, func= linear, iter = 0, duration=0, cycle=0, frames=0, align=False,  rognage=True, vid=False, debug = False):
         
         if not vid:
             self.imgList.load_Img(inputStr)
@@ -148,7 +166,7 @@ class Slicing:
         largeur_bande, espace_residuel = self.pre_slice(nb_bandes)
 
         if vid:
-            decalage = self.decal_Img(iter, frames, cycle)
+            decalage = self.decal_Img(iter, frames, cycle, func)
         else:
             decalage=0
 
@@ -178,12 +196,12 @@ class Slicing:
         return fond, outputImgAddr
 
 
-    def silce_vid(self, nb_bandes, fps, inputStr, outputStr, duration = 2, cycle= 1, align=False,  rognage=True, debug = False):
+    def silce_vid(self, nb_bandes, fps, inputStr, outputStr, func=linear, duration = 2, cycle= 1, align=False,  rognage=True, debug = False, height = 4092, width = 2160):
 
         d = Data_process()
 
         self.imgList.load_Img(inputStr)
-        self.imgList.resize_Img_list()
+        self.imgList.resize_Img_list(height=height, width=width)
 
         frames = self.decal_Frames(duration, fps)
 
@@ -192,7 +210,7 @@ class Slicing:
         for i in range (frames):
             p = ((i/frames)*100)+1
             mybar.progress(int(p))
-            _ , inputStr_vid = self.slice(nb_bandes, inputStr, outputStr, iter = i, duration= duration, frames= frames, cycle=cycle, align=align, vid = True)
+            _ , inputStr_vid = self.slice(nb_bandes, inputStr, outputStr, func=func, iter = i, duration= duration, frames= frames, cycle=cycle, align=align, vid = True)
 
         d.save_to_vid(inputStr_vid, outputStr, fps)
         d.folder(inputStr_vid, rm=True)
