@@ -22,7 +22,7 @@ class Pre_process:
         largeur, _ = self.imgList.get_Max_Size()
         largeur_bande = largeur//nb_bandes 
         nb_img = self.imgList.get_Nb_Img()    
-        print("nb photo : ", nb_img)                                        
+        #print("nb photo : ", nb_img)                                        
         espace_residuel=int((largeur%(nb_bandes))/2)                                
         return largeur_bande, espace_residuel
 

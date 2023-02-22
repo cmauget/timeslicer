@@ -45,6 +45,7 @@ class Slicing:
         img = self.imgList[n_iteration]
     
         return img  
+        
 
     def get_Nb_Bandes(self):
         return self.imgList.get_Nb_Img()
@@ -174,16 +175,15 @@ class Slicing:
 
         for i in range(self.imgList.get_Nb_Img()):  
             photo_utilisee=i
-            print("photo utilisée : ",photo_utilisee)
             print(inputStr+os.listdir(inputStr)[photo_utilisee])
             self.overlay_cropNpaste(espace_residuel,largeur_bande,i, decalage=decalage)
-            print(str(round(100*(i)/self.imgList.get_Nb_Img()))+" %")  #avancement du traitement de la photo
+            print(str(round(100*(i)/self.imgList.get_Nb_Img()))+" %") 
         print("100 %")
 
         if rognage:
             fond = self.rognage_residus(self.background,espace_residuel)
         
-        print("Slicing terminé !")
+        print("Slicing done !")
         outputImgAddr = outputStr
 
         if vid:
@@ -192,7 +192,7 @@ class Slicing:
 
         else : 
             d.folder(outputImgAddr,rm=0)
-            outputImg = outputImgAddr+str(self.get_Nb_Bandes())+"_bandes.png"
+            outputImg = outputImgAddr+str(self.get_Nb_Bandes())+"_slice.png"
         
         d.save_pic(outputImg, fond)
         return fond, outputImgAddr

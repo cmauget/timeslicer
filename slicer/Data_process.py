@@ -61,15 +61,6 @@ class Data_process:
 
 
     def save_to_vid(self, inputStr, outputStr, fps=25):
-        '''
-        for i in range(10):
-            im = Image.open(inputStr+f'image{i}.png')
-            w, h = im.size
-            h = h - h % 2
-            im = im.resize((w, h))
-            im.save(inputStr+f'image{i}.png')
-        
-        '''
 
         (
             ffmpeg

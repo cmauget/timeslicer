@@ -30,17 +30,18 @@ outputStr = st.sidebar.text_input("Enter output folder", value="output/")
 vid = st.sidebar.checkbox("Video Output")
 
 if vid:
-    funcoption = [ "linear", "easeInSine", "easeInOutCubic"]
-    funclist=[ s.linear, s.easeInSine, s.easeInOutCubic]
-    frame_rate = st.sidebar.number_input("Enter wanted fps", min_value=0, max_value=60, value=25)
-    duration = st.sidebar.slider("Choose wanted duration ", min_value=1, max_value=30, value=5, step=1)
-    cycle = st.sidebar.number_input("Choose wanted number of cycle ", min_value=1, max_value=30, value=1)
-    height = st.sidebar.number_input("Enter height resolution", min_value=1,  max_value=4092, value = 1920)
-    width = st.sidebar.number_input("Enter width resolution", min_value=1, max_value=2160, value = 1080)
-    funcname = st.sidebar.selectbox("Choose the easing option", options = funcoption)
-
-if st.sidebar.button("Stop"):
-    st.stop()
+    with st.sidebar:
+        funcoption = [ "linear", "easeInSine", "easeInOutCubic"]
+        funclist=[ s.linear, s.easeInSine, s.easeInOutCubic]
+        frame_rate = st.number_input("Enter wanted fps", min_value=0, max_value=60, value=25)
+        duration = st.slider("Choose wanted duration (s)", min_value=1, max_value=30, value=5, step=1)
+        cycle = st.number_input("Choose wanted number of cycle ", min_value=1, max_value=30, value=1)
+        col1, col2 = st.columns(2)
+        with col1:
+            height = st.number_input("Enter height resolution", min_value=1,  max_value=4092, value = 1920)
+        with col2:
+            width = st.number_input("Enter width resolution", min_value=1, max_value=2160, value = 1080)
+        funcname = st.selectbox("Choose the easing option", options = funcoption)
 
 result_container = st.empty()
 
@@ -54,7 +55,7 @@ if not runed:
         video_bytes = video_file.read()
         place_holder.video(video_bytes)
     else:
-        img= Image.open("output/3_bandes.png")
+        img= Image.open("output/ex.png")
         place_holder.image(img)
 
 if button:

@@ -14,7 +14,7 @@ class Img_list:
         print(cwd)
         os.chdir(inputStr)
 
-        for file in os.listdir():
+        for file in sorted(os.listdir()):
             self.imgList.append(Img_process(file))
 
         print("Load complete")
@@ -51,7 +51,7 @@ class Img_list:
 
         for img in self.imgList:
             img = img.resize_Img(width, height)
-        print("Resize complete")
+        #print("Resize complete")
 
 
     

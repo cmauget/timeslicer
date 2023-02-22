@@ -48,7 +48,6 @@ class Img_process:
     def resize_Img(self, height=4092, width=2160):
 
         if self.height != height or self.width != width:
-            #TODO get ratio
             self.img = self.img.resize((width, height))
         
 
