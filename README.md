@@ -6,7 +6,7 @@ A simple python script for creating timeslices
 
 ## Setup
 
-First, you will need to move to the root of this repo using the _cd_ command. It is recommended to use it in a venv (using conda for example)
+First, you will need to download the zip, extract it, and move to the root of this repo using the _cd_ command. It is recommended to use it in a venv (using conda for example)
 
 ### On ubuntu 
 
