@@ -47,5 +47,4 @@ and on windows :
     
 A new window will open in your browser, if not use the "localhost" link given in the terminal.  
 In order to create a video check the video output box and complete the informations.
-Click the run me butoon and enjoy ! 
-
+Click the run me button and enjoy ! 
