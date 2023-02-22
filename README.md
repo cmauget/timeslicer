@@ -2,7 +2,7 @@
 
 A simple python script for creating timeslices 
 
-<a href="url"><img src="https://github.com/cmauget/timeslicer/blob/master/output/3_bandes.png" height="250" width="500"></a>
+<a href="url"><img src="https://github.com/cmauget/timeslicer/blob/master/output/ex.png" height="250" width="500"></a>
 
 ## Setup
 
