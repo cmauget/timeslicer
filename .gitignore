@@ -5,6 +5,6 @@ aligned/*.jpg
 scripts/*.jpg
 slicer/*.jpg
 output/de_gauche_à_droite/
-*.mp4
 slicer/output/.vid/
 output/.vid/
+output/*.mp4
