@@ -7,19 +7,18 @@ class Img_list:
         self.imgList = []
 
 
-    def load_Img(self, inputStr):
+    def load_Img(self, inputStr:str):
 
         self.imgList = []
         cwd = os.getcwd()
-        print(cwd)
+        #print(cwd)
         os.chdir(inputStr)
 
         for file in sorted(os.listdir()):
             self.imgList.append(Img_process(file))
 
-        print("Load complete")
+        #print("Load complete")
         os.chdir(cwd)
-
 
     def get_Max_Size(self):
 

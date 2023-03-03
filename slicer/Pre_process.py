@@ -7,8 +7,6 @@ class Pre_process:
     def __init__(self, imgList1: Img_list):
         self.imgList = imgList1
 
-
-
     def create_bg(self): 
    
         width, height = self.imglist.get_Max_Size()

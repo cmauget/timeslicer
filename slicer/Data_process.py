@@ -11,6 +11,8 @@ class Data_process:
 
 
     def create_folder(self,addr):
+        os.mkdir(addr)
+        '''
         if not os.path.exists(addr):
             i=len(addr)
             while addr[i-1]!="/" and i>0:
@@ -22,7 +24,7 @@ class Data_process:
                 self.create_folder(parent)
                 if os.path.exists(parent):
                     os.mkdir(addr)
-
+        '''
 
     def folder(self,addr,rm=True):
         if os.path.exists(addr):
@@ -45,6 +47,7 @@ class Data_process:
         metadata=self.pngInfoWriter()
         img.save(fileName, pnginfo=metadata)   
         print("Saved !")
+    
 
     
     def folder_to_vid(self, iter, outputImgAddr):

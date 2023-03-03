@@ -1,8 +1,10 @@
 from PIL import Image
+import io
 
 class Img_process:
 
-    def __init__(self, fileName1: str):
+    def __init__(self, fileName1):
+        
         self.fileName = fileName1
         self.img = Image.open(self.fileName)
         self.width, self.height = self.img.size
