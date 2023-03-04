@@ -6,7 +6,7 @@ import numpy as np
 import streamlit as st#type: ignore
 
 from slicer.Data_process import Data_process
-from slicer.Align_cv import Align_cv
+#from slicer.Align_cv import Align_cv
 from slicer.Img_list import Img_list
 
 import ffmpeg #type: ignore
@@ -149,20 +149,6 @@ class Slicing:
             self.imgList.load_Img(inputStr)
 
         d=Data_process()
-        
-
-        if align : 
-            a=Align_cv()
-            imRef = a.loadRef(inputStr+"/"+os.listdir(inputStr)[0])
-            a.saveIm(imRef, "aligned/"+os.listdir(inputStr)[0])
-
-            for i in range(self.imgList.get_Nb_Img()-1):
-                im = a.loadIm(inputStr+"/"+os.listdir(inputStr)[i+1])
-                imReg, h = a.alignImages(im, imRef)
-                a.saveIm(imReg, "aligned/"+os.listdir(inputStr)[i+1])
-                print("Estimated homography : \n",  h)
-    
-            inputStr = 'aligned'
         
         self.create_bg()  
 
