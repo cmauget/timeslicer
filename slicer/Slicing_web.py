@@ -23,8 +23,6 @@ class Slicing:
     def create_bg(self): 
 
         width, height = self.imgList.get_Max_Size()
-        print(width)
-        print(height)
         bg = Image.new(mode="RGB", size=(width, height))
         self.background = bg
         
@@ -161,10 +159,9 @@ class Slicing:
 
         for i in range(self.imgList.get_Nb_Img()):  
             photo_utilisee=i
-            print(inputStr+os.listdir(inputStr)[photo_utilisee])
             self.overlay_cropNpaste(espace_residuel,largeur_bande,i, decalage=decalage)
-            print(str(round(100*(i)/self.imgList.get_Nb_Img()))+" %") 
-        print("100 %")
+            #print(str(round(100*(i)/self.imgList.get_Nb_Img()))+" %") 
+        #print("100 %")
 
         if rognage:
             fond = self.rognage_residus(self.background,espace_residuel)

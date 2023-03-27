@@ -43,10 +43,10 @@ class Data_process:
 
     def save_pic(self, fileName, img):
     
-        print("Saving...", fileName)
+        #print("Saving...", fileName)
         metadata=self.pngInfoWriter()
         img.save(fileName, pnginfo=metadata)   
-        print("Saved !")
+        #print("Saved !")
     
 
     
