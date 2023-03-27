@@ -8,14 +8,12 @@ import io
 folder = os.path.dirname(__file__)
 sys.path.append(folder+"/..")
 
-from slicer.Slicing import Slicing
-from slicer.Data_process import Data_process
+from slicer.Slicing_web import Slicing
 
 st.set_page_config(
     page_title="Timeslicer",
     page_icon=":camera:",
 )
-
 
 s = Slicing()
 
@@ -30,8 +28,10 @@ st.sidebar.title("Settings :wrench:")
 
 uploaded_files = st.sidebar.file_uploader("Choose an image file", type=["png","jpg"], accept_multiple_files=True)
 
-print(uploaded_files)
+for img in os.listdir('input'):
+        os.remove("input/"+img)
 
+    
 if uploaded_files!=[]:
 
     for img in os.listdir('input'):
@@ -67,7 +67,6 @@ result_container = st.empty()
 
 button = st.button("Run me")
 
-
 if not runed:
     place_holder = st.empty()
     if vid:
@@ -81,9 +80,11 @@ if not runed:
 
 if button:
 
+    if uploaded_files==[]:
+        inputStr = "input_ex"
+
     if vid:
         func = funclist[funcoption.index(funcname)]
-        print(func)
         with st.spinner("Generating video, please wait..."):
             place_holder.empty()
             s.silce_vid( frame_rate, inputStr, outputStr, func=func, duration=duration, cycle=cycle, height=height, width=width)
@@ -104,13 +105,13 @@ if button:
 
         st.sidebar.download_button("Download output image", byte_im, "fixed.png", "image/png")
 
-    st.balloons()
 
 st.markdown("---")
 
-st.write(
-    "Feel free to share on social media !"
-)
+st.write("Feel free to share on social media !")
+
+st.markdown("*PS : I am currently seeking a three-month internship in Data Science for the summer season. If you know of any available positions, please do not hesitate to get in touch with me !*")
 st.markdown(
     "More infos and :star: at [github.com/cmauget/timelapse-slicer](https://github.com/cmauget/timelapse-slicer)"
 )
+
