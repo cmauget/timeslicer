@@ -2,7 +2,9 @@
 
 A simple python script to create "timeslices" 
 
+<h3 align="center">
 <a href="url"><img src="https://github.com/cmauget/timeslicer/blob/master/output/ex.png" height="250" width="500"></a>
+</h3>  
 
 ---
 <h3 align="center">
