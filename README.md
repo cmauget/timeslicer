@@ -4,7 +4,14 @@ A simple python script to create "timeslices"
 
 <a href="url"><img src="https://github.com/cmauget/timeslicer/blob/master/output/ex.png" height="250" width="500"></a>
 
-## Setup
+---
+<h3 align="center">
+    🎈 Try it out here: <a href="https://timeslicer.streamlit.app/">timeslicer on streamlit 🎈 </a>
+</h3>
+
+---
+
+## Local Setup
 
 First, you will need to download the zip, extract it, and move to the root of this repo using the _cd_ command. It is recommended to use it in a venv (using conda for example)
 
