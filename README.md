@@ -13,6 +13,8 @@ A simple python script to create "timeslices"
 
 ---
 
+*Based on https://github.com/loickt/timelapse_slicer by @loickt*
+
 ## Local Setup
 
 First, you will need to download the zip, extract it, and move to the root of this repo using the _cd_ command. It is recommended to use it in a venv (using conda for example)
