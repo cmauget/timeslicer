@@ -8,3 +8,4 @@ output/de_gauche_à_droite/
 slicer/output/.vid/
 output/.vid/
 output/*.mp4
+input/*.txt
