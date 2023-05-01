@@ -1,5 +1,5 @@
-import streamlit as st#type: ignore
-from PIL import Image
+import streamlit as st #type: ignore
+from PIL import Image #type: ignore
 
 import sys
 import os
@@ -110,7 +110,6 @@ st.markdown("---")
 
 st.write("Feel free to share on social media !")
 
-st.markdown("*PS : I am currently seeking a three-month internship in Data Science for the summer season. If you know of any available positions, please do not hesitate to get in touch with me !*")
 st.markdown(
     "More infos and :star: at [github.com/cmauget/timelapse-slicer](https://github.com/cmauget/timelapse-slicer)"
 )
