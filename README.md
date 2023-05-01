@@ -59,3 +59,23 @@ and on windows :
 A new window will open in your browser, if not use the "localhost" link given in the terminal.  
 In order to create a video check the video output box and complete the informations.
 Click the run me button and enjoy ! 
+
+# Command Line Tool
+
+There is a command line tool for fast slicing. To use it you will need to be ine then timeslicer folder.
+
+## Usage
+
+A typical usage will be the following :  
+
+    python3 main.py -i "input/" -o "output/"
+
+## Parameters
+
+if you need any help just use :  
+
+   python3 main.py -h
+
+You have the following parameters :
+
+    -i <inputfolder> -o <outputfolder> -v (video output (WIP)) -d (do not display the image)
