@@ -23,8 +23,8 @@ class Slicing:
     def create_bg(self): 
 
         width, height = self.imgList.get_Max_Size()
-        print(width)
-        print(height)
+        #print(width)
+        #print(height)
         bg = Image.new(mode="RGB", size=(width, height))
         self.background = bg
         
@@ -175,15 +175,18 @@ class Slicing:
 
         for i in range(self.imgList.get_Nb_Img()):  
             photo_utilisee=i
-            print(inputStr+os.listdir(inputStr)[photo_utilisee])
+            #print(inputStr+os.listdir(inputStr)[photo_utilisee])
             self.overlay_cropNpaste(espace_residuel,largeur_bande,i, decalage=decalage)
-            print(str(round(100*(i)/self.imgList.get_Nb_Img()))+" %") 
-        print("100 %")
+            if not vid:
+               print(str(round(100*(i)/self.imgList.get_Nb_Img()))+" %", end='\r') 
+        if not vid:
+            print("100 %")
 
         if rognage:
             fond = self.rognage_residus(self.background,espace_residuel)
         
-        print("Slicing done !")
+        if not vid:
+            print("Slicing done !")
         outputImgAddr = outputStr
 
         if vid:
@@ -195,10 +198,30 @@ class Slicing:
             outputImg = outputImgAddr+str(self.get_Nb_Bandes())+"_slice.png"
         
         d.save_pic(outputImg, fond)
+        if not vid:
+            print(f"Saved at {outputImg}")
         return fond, outputImgAddr
+    
+    def silce_vid_cl(self, fps, inputStr, outputStr, func=lambda x :x, duration = 2, cycle= 1, align=False,  rognage=True, debug = False, height = 4092, width = 2160):
+
+        d = Data_process()
+
+        self.imgList.load_Img(inputStr)
+        self.imgList.resize_Img_list(height=height, width=width)
+
+        frames = self.decal_Frames(duration, fps)
+
+        for i in range (frames):
+            p = ((i/frames)*100)+1
+            print(str(round(p))+"%", end = "\r")
+            _ , inputStr_vid = self.slice(inputStr, outputStr, func=func, iter = i, duration= duration, frames= frames, cycle=cycle, align=align, vid = True)
+        print("100%")
+        d.save_to_vid(inputStr_vid, outputStr, fps)
+        print(f"Saved at {outputStr}")
+        d.folder(inputStr_vid, rm=True)
 
 
-    def silce_vid(self, fps, inputStr, outputStr, func=linear, duration = 2, cycle= 1, align=False,  rognage=True, debug = False, height = 4092, width = 2160):
+    def silce_vid(self, fps, inputStr, outputStr, func=lambda x :x, duration = 2, cycle= 1, align=False,  rognage=True, debug = False, height = 4092, width = 2160):
 
         d = Data_process()
 
